@@ -5,6 +5,9 @@ WHERE name = 'Germany'
 
 -- Problem 1
 
+SELECT name FROM world
+  WHERE name LIKE 'Y%'
+
 
 -- Problem 2
 
