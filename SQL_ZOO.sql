@@ -1,6 +1,9 @@
--- Problem 1
+-- Problem 0
 SELECT population FROM world
 WHERE name = 'Germany'
+
+
+-- Problem 1
 
 
 -- Problem 2
