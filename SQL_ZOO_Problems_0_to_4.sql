@@ -264,36 +264,58 @@ ORDER BY  subject IN ('Physics','Chemistry'), subject, winner
 -- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 -- Problem 4
+-- 1
+SELECT name
+FROM world
+WHERE population > 
+    (SELECT population
+    FROM world
+    WHERE name='Russia')
 
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+-- 2
+SELECT name FROM world
+WHERE gdp/population > (SELECT gdp/population AS per_capita FROM world WHERE name = 'United Kingdom') AND continent = 'Europe'
 
--- Problem 5
+-- 3
+SELECT name, continent FROM world
+WHERE continent IN ((SELECT continent FROM world WHERE name = 'Argentina'),(SELECT continent FROM world WHERE name = 'Australia')) 
+ORDER BY name
 
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+-- 4
+SELECT name, population FROM world 
+WHERE population > (SELECT population FROM world WHERE name = 'Canada') AND population < (SELECT population FROM world WHERE name = 'Poland')
 
--- Problem 6
+-- 5
+SELECT name, CONCAT(ROUND(SUM(population/(SELECT population FROM world WHERE name = 'Germany')*100)), '%') AS percent FROM world
+WHERE continent = 'Europe'
+GROUP BY name
 
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+-- 6
+SELECT name FROM world
+WHERE gdp > (SELECT gdp FROM world WHERE continent = 'Europe' ORDER BY gdp DESC LIMIT 1)
 
--- Problem 7
+-- 7
+SELECT continent, name, area FROM world
+WHERE area IN (SELECT MAX(area) FROM world GROUP BY continent)
 
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+-- 8
+SELECT continent, MIN(name) AS name
+FROM world 
+GROUP BY continent
 
--- Problem 8
 
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+-- 9
+select name,continent ,population from world 
+    where continent in( select continent from world group by
+         continent having MAX(population)<=25000000 )
 
--- Problem 8+
-
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-
--- Problem 9-
-
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-
--- Problem 9+
-
--- -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-
--- Problem 9
+-- 10
+SELECT
+  name, continent
+FROM
+  world AS x
+WHERE
+  population / 3 > ALL(SELECT population FROM world AS y
+WHERE
+  x.name <> y.name AND x.continent = y.continent AND population IS NOT NULL);
 
