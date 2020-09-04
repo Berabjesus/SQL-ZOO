@@ -6,6 +6,12 @@ FROM
   world;
 
 -- 2. List all the continents - just once each.
+SELECT continent
+FROM world
+GROUP BY  continent
+
+-- OR
+
 SELECT DISTINCT
   continent
 FROM
@@ -121,6 +127,12 @@ WHERE
   game.stadium = 'National Stadium, Warsaw';
 
 -- 8. Show the name of all players who scored a goal against Germany.
+SELECT DISTINCT goal.player FROM goal
+JOIN game ON (goal.matchid = game.id)
+WHERE goal.teamid NOT IN ('GER') AND (team1 = 'GER' OR team2 = 'GER')
+
+-- OR --
+
 SELECT DISTINCT
   player
 FROM
